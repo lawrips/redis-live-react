@@ -1,8 +1,8 @@
 {
   "name": "redis-live",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "",
-  "main": "lib/public/react/bundle.js",
+  "main": "bin/index.js",
   "scripts": {
     "compile": "webpack --config webpack.config.js",
     "prepublish": "npm run compile"

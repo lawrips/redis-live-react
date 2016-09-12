@@ -39,5 +39,4 @@ jspm_packages
 # Custom
 config/config.json
 .vscode
-bin
-lib/public/react
+#bin
