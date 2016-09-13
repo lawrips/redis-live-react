@@ -49,11 +49,11 @@ module.exports =
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	console.log('here2!');
 	var CommandOutput = __webpack_require__(1);
 	var CommandInput = __webpack_require__(2);
 	var ServerStatus = __webpack_require__(5);
 	var ClusterStatus = __webpack_require__(7);
+	var SystemStatus = __webpack_require__(8);
 
 	var RedisLive = function RedisLive(redisLive) {
 	    _classCallCheck(this, RedisLive);
@@ -63,6 +63,9 @@ module.exports =
 
 	    var serverStatus = redisLive.serverStatus;
 	    var clusterStatus = redisLive.clusterStatus;
+	    var systemStatus = redisLive.systemStatus;
+
+	    var systemStatusList = redisLive.systemStatusList;
 
 	    redisLive.path = redisLive.path || '';
 
@@ -75,12 +78,16 @@ module.exports =
 	    }
 
 	    if (serverStatus) {
-	        var Status = ReactDOM.render(React.createElement(ServerStatus, { hosts: redisLive.hosts, path: redisLive.path }), serverStatus);
+	        ReactDOM.render(React.createElement(ServerStatus, { hosts: redisLive.hosts, path: redisLive.path }), serverStatus);
 	    }
 
 	    if (clusterStatus) {
 	        var Cluster = ReactDOM.render(React.createElement(ClusterStatus, { path: redisLive.path }), clusterStatus);
 	        Cluster.initialize();
+	    }
+
+	    if (systemStatus) {
+	        ReactDOM.render(React.createElement(SystemStatus, { path: redisLive.path, hosts: redisLive.hosts, systemStatusList: systemStatusList }), systemStatus);
 	    }
 	};
 
@@ -4051,8 +4058,6 @@ module.exports =
 	                    ));
 	                });
 
-	                console.log(tables);
-
 	                return {
 	                    v: React.createElement(
 	                        'div',
@@ -4111,6 +4116,136 @@ module.exports =
 	}
 
 	module.exports = ClusterStatus;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var SystemStatus = React.createClass({
+	    displayName: 'SystemStatus',
+
+	    getInitialState: function getInitialState() {
+	        var _this = this;
+
+	        var status = [];
+
+	        this.props.hosts.forEach(function (host) {
+	            _this.getStatus(host, function (err, result) {
+	                status.push([host].concat(_this._renderStatus(result)));
+	                _this.setState({
+	                    status: status
+	                });
+	            });
+	        });
+
+	        return {
+	            systemStatusList: this.props.systemStatusList || ['used_memory'],
+	            status: status
+	        };
+	    },
+
+	    getStatus: function getStatus(host, callback) {
+	        var options = {
+	            url: this.props.path + '/info',
+	            dataType: 'json',
+	            type: 'POST',
+	            data: { host: host }
+	        };
+
+	        this.serverRequest = $.ajax(options).always(function (result) {
+	            callback(null, result.responseText);
+	        });
+	    },
+
+	    render: function render() {
+	        if (this.state.status.length > 0) {
+	            var counter = 0;
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'table',
+	                    null,
+	                    React.createElement(
+	                        'thead',
+	                        null,
+	                        React.createElement(
+	                            'tr',
+	                            null,
+	                            React.createElement(
+	                                'td',
+	                                null,
+	                                'Server'
+	                            ),
+	                            this.state.status[0].map(function (col, j) {
+	                                if (counter++ % 2 == 1) {
+	                                    return React.createElement(
+	                                        'td',
+	                                        { key: j },
+	                                        col
+	                                    );
+	                                }
+	                            })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tbody',
+	                        null,
+	                        this.state.status.map(function (row, i) {
+	                            counter = 0;
+	                            return React.createElement(
+	                                'tr',
+	                                { key: i },
+	                                row.map(function (col, j) {
+	                                    if (counter++ % 2 == 0) {
+	                                        return React.createElement(
+	                                            'td',
+	                                            { key: j },
+	                                            col
+	                                        );
+	                                    }
+	                                })
+	                            );
+	                        })
+	                    )
+	                )
+	            );
+	        } else {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    null,
+	                    'Results will be displayed here'
+	                )
+	            );
+	        }
+	    },
+
+	    _renderStatus: function _renderStatus(status) {
+	        var _this2 = this;
+
+	        var lines = status.split('\n');
+	        var table = [];
+	        lines.forEach(function (line) {
+	            if (line) {
+	                var pair = line.split(':');
+	                if (_this2.state.systemStatusList.indexOf(pair[0]) > -1) {
+	                    table.push(pair[0]);
+	                    table.push(pair[1]);
+	                }
+	            }
+	        });
+
+	        return table;
+	    }
+
+	});
+
+	module.exports = SystemStatus;
 
 /***/ }
 /******/ ]);
