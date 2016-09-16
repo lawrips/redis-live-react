@@ -1,6 +1,6 @@
 {
   "name": "redis-live",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "",
   "main": "bin/index.js",
   "scripts": {
@@ -22,9 +22,7 @@
     "react": "^15.3.1",
     "react-autosuggest": "^6.0.3",
     "react-chartjs-2": "^1.2.5",
-    "react-dom": "^15.3.1"
-  },
-  "devDependencies": {
+    "react-dom": "^15.3.1",
     "json-loader": "^0.5.4",
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.14.0",
