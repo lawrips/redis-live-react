@@ -1,6 +1,6 @@
 {
   "name": "redis-live",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "",
   "main": "bin/index.js",
   "scripts": {
@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/lawrips/redis-live-react#readme",
   "dependencies": {
+    "react": "^15.3.1",
+    "react-autosuggest": "^6.0.3",
+    "react-chartjs-2": "^1.2.5",
+    "react-dom": "^15.3.1"
   },
   "devDependencies": {
     "json-loader": "^0.5.4",
