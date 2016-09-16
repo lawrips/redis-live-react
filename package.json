@@ -1,12 +1,11 @@
 {
   "name": "redis-live",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "",
   "main": "bin/index.js",
   "scripts": {
     "compile": "webpack --config webpack.config.js",
-    "prepublish": "npm run compile",
-    "postinstall": "npm run compile"
+    "prepublish": "npm run compile"
   },
   "repository": {
     "type": "git",
