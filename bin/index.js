@@ -4451,7 +4451,6 @@ module.exports =
 	      };
 
 	      _this.serverRequest = $.ajax(options).always(function (result) {
-	        console.log(result);
 	        if (result.responseText) {
 	          _this.state.output.setText(result.responseText);
 	        } else if ((typeof result === 'undefined' ? 'undefined' : _typeof(result)) === 'object') {
@@ -44897,7 +44896,8 @@ module.exports =
 	                    React.createElement(
 	                        _reactSparklines.Sparklines,
 	                        { id: j, data: _this2.state.data[host], limit: 6 },
-	                        React.createElement(_reactSparklines.SparklinesLine, null)
+	                        React.createElement(_reactSparklines.SparklinesLine, { color: 'blue' }),
+	                        React.createElement(_reactSparklines.SparklinesSpots, null)
 	                    )
 	                );
 	            })
