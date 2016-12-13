@@ -4272,6 +4272,18 @@ module.exports =
 	      });
 	    };
 
+	    _this.onKeyDown = function (event) {
+	      if (event.keyCode === 13) {
+	        // Enter
+	        // Stop it here
+	        event.preventDefault();
+	        event.stopPropagation();
+
+	        // invoke button press
+	        _this.onButtonClick();
+	      }
+	    };
+
 	    _this.onSuggestionsFetchRequested = function (_ref2) {
 	      var value = _ref2.value;
 
@@ -4340,7 +4352,8 @@ module.exports =
 	      var inputProps = {
 	        placeholder: 'e.g. SET hello world',
 	        value: value,
-	        onChange: this.onChange
+	        onChange: this.onChange,
+	        onKeyDown: this.onKeyDown
 	      };
 
 	      var css = {
